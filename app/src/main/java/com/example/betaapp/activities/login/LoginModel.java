@@ -4,10 +4,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.betaapp.api.utils.GitHubAuthenticationReceiver;
-import com.example.betaapp.api.utils.GitHubAuthenticator;
+import com.example.betaapp.api.receivers.ReceiverAuthentication;
+import com.example.betaapp.api.GitHubAuthenticator;
 
-public class LoginModel implements Login.Model, GitHubAuthenticationReceiver.AuthenticationCompleteListener {
+public class LoginModel implements Login.Model, ReceiverAuthentication.AuthenticationCompleteListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -15,7 +15,7 @@ public class LoginModel implements Login.Model, GitHubAuthenticationReceiver.Aut
 
     private static final String LOG_TAG = LoginModel.class.getSimpleName();
 
-    private final GitHubAuthenticationReceiver receiver;
+    private final ReceiverAuthentication receiver;
 
     private final GitHubAuthenticator authenticator;
 
@@ -26,7 +26,7 @@ public class LoginModel implements Login.Model, GitHubAuthenticationReceiver.Aut
     // -------------------------------------------------------------------------------
 
     public LoginModel(OnLoginFinishListener onFinishListener) {
-        receiver = new GitHubAuthenticationReceiver(this);
+        receiver = new ReceiverAuthentication(this);
         authenticator = new GitHubAuthenticator();
         this.onFinishListener = onFinishListener;
     }

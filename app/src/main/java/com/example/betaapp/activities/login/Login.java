@@ -3,7 +3,7 @@ package com.example.betaapp.activities.login;
 import android.content.Context;
 import android.net.Uri;
 
-import com.example.betaapp.utils.Receiver;
+import com.example.betaapp.utils.ReceiverBinding;
 
 /**
  * MVP interfaces for Login
@@ -16,7 +16,7 @@ public interface Login {
         void loadingComplete(boolean isSuccessful);
     }
 
-    interface Model extends Receiver {
+    interface Model extends ReceiverBinding {
         interface OnLoginFinishListener {
             void onLoginCompleted(boolean isSuccessful);
         }

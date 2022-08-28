@@ -1,4 +1,4 @@
-package com.example.betaapp.api.utils;
+package com.example.betaapp.api.receivers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,19 +6,18 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.example.betaapp.BaseApplication;
-import com.example.betaapp.utils.BaseBroadcastReceiver;
 
-public class GitHubAuthenticationReceiver extends BaseBroadcastReceiver {
+public class ReceiverAuthentication extends ReceiverBase {
 
     // -------------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------------
 
-    private static final String LOG_TAG = GitHubAuthenticationReceiver.class.getSimpleName();
+    private static final String LOG_TAG = ReceiverAuthentication.class.getSimpleName();
 
-    private static final String ACTION_AUTH_COMPLETED = "com.example.betaapp.api.utils.ACTION_AUTH_COMPLETED";
+    private static final String ACTION_AUTH_COMPLETED = "com.example.betaapp.api.receivers.ACTION_AUTH_COMPLETED";
 
-    private static final String EXTRA_RESULT = "com.example.betaapp.api.utils.EXTRA_RESULT";
+    private static final String EXTRA_RESULT = "com.example.betaapp.api.receivers.EXTRA_RESULT";
 
     private final AuthenticationCompleteListener completeListener;
 
@@ -26,7 +25,7 @@ public class GitHubAuthenticationReceiver extends BaseBroadcastReceiver {
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public GitHubAuthenticationReceiver(AuthenticationCompleteListener listener) {
+    public ReceiverAuthentication(AuthenticationCompleteListener listener) {
         super();
         this.completeListener = listener;
     }
@@ -44,10 +43,13 @@ public class GitHubAuthenticationReceiver extends BaseBroadcastReceiver {
     protected void onReceive(Context context, String action, Intent data) {
         Log.d(LOG_TAG, "onReceive : " + action);
         if (action.contentEquals(ACTION_AUTH_COMPLETED)) {
-            Log.d(LOG_TAG,  "onReceive : " + data.getBooleanExtra(EXTRA_RESULT, false));
             completeListener.onAuthenticationCompleted(data.getBooleanExtra(EXTRA_RESULT, false));
         }
     }
+
+    // -------------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------------
 
     public static void broadcastAuthenticationCompleted(boolean isSuccessful) {
         Intent intent = new Intent(ACTION_AUTH_COMPLETED);

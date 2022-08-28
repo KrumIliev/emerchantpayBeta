@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import com.example.betaapp.utils.Cache;
 import com.example.betaapp.api.models.request.RequestOAuthToken;
 import com.example.betaapp.api.models.response.ResponseOAuthToken;
-import com.example.betaapp.api.utils.GitHubAuthenticationReceiver;
+import com.example.betaapp.api.receivers.ReceiverAuthentication;
 
 public class GetOAuthToken extends GitHubRequest<RequestOAuthToken, ResponseOAuthToken> {
 
@@ -45,14 +45,13 @@ public class GetOAuthToken extends GitHubRequest<RequestOAuthToken, ResponseOAut
     protected void onRequestSuccess(ResponseOAuthToken response) {
         Log.d(LOG_TAG, response.getAccessToken());
         Cache.gitHubToken = response.getAccessToken();
-//        GitHubService.getLoggedUser();
-        GitHubAuthenticationReceiver.broadcastAuthenticationCompleted(true);
+        ReceiverAuthentication.broadcastAuthenticationCompleted(true);
     }
 
     @Override
     protected void onRequestFailed(VolleyError volleyError) {
         Log.e(LOG_TAG, volleyError.getMessage());
         Cache.gitHubToken = null;
-        GitHubAuthenticationReceiver.broadcastAuthenticationCompleted(false);
+        ReceiverAuthentication.broadcastAuthenticationCompleted(false);
     }
 }

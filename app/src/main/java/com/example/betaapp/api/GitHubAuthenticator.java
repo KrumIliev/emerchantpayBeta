@@ -1,17 +1,13 @@
-package com.example.betaapp.api.utils;
+package com.example.betaapp.api;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.betaapp.api.GitHubService;
 import com.example.betaapp.api.actions.GitHubRequest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GitHubAuthenticator {

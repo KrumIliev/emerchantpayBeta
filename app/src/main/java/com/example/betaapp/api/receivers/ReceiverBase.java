@@ -1,4 +1,4 @@
-package com.example.betaapp.utils;
+package com.example.betaapp.api.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 
-public abstract class BaseBroadcastReceiver extends BroadcastReceiver {
+public abstract class ReceiverBase extends BroadcastReceiver {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -18,7 +18,7 @@ public abstract class BaseBroadcastReceiver extends BroadcastReceiver {
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public BaseBroadcastReceiver() {
+    public ReceiverBase() {
         this.filter = new IntentFilter();
         addActions(filter);
     }

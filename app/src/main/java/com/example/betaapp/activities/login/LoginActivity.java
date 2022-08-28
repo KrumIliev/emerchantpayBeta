@@ -1,5 +1,6 @@
 package com.example.betaapp.activities.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.betaapp.R;
+import com.example.betaapp.activities.user.UserActivity;
 import com.example.betaapp.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity implements Login.View {
@@ -81,9 +83,8 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
 
     @Override
     public void loadingComplete(boolean isSuccessful) {
-        // TODO trigger user activity
         if (isSuccessful) {
-            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, UserActivity.class));
         } else {
             Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
         }
