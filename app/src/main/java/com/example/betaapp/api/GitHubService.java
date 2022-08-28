@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.betaapp.BaseApplication;
 import com.example.betaapp.api.actions.GetOAuthToken;
+import com.example.betaapp.api.actions.GetLoggedUser;
 
 public class GitHubService extends IntentService {
 
@@ -18,9 +19,10 @@ public class GitHubService extends IntentService {
 
     private static final String LOG_TAG = GitHubService.class.getSimpleName();
 
-    private static final String ACTION_BASE = "com.example.betaapp.api";
-    public static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
-    public static final String ACTION_STOP = ACTION_BASE + "ACTION_STOP";
+    private static final String ACTION_BASE = "com.example.betaapp.api.";
+    private static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
+    private static final String ACTION_GET_LOGGED_USER = ACTION_BASE + "ACTION_GET_LOGGED_USER";
+    private static final String ACTION_STOP = ACTION_BASE + "ACTION_STOP";
 
     // -------------------------------------------------------------------------------
     // Instance creations
@@ -56,18 +58,7 @@ public class GitHubService extends IntentService {
     // -------------------------------------------------------------------------------
 
     /**
-     * Send action to GitHub
-     *
-     * <p> {@link GitHubService#ACTION_STOP}
-     */
-    public static void send(String action) {
-        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
-        intent.setAction(action);
-        BaseApplication.getContext().startService(intent);
-    }
-
-    /**
-     * Sends POST request to GitHub HTTP API to generate OAuth token
+     * Sends POST request to GitHub HTTP to generate OAuth token
      *
      * @param code Retrieved via user login into browser window
      */
@@ -75,6 +66,24 @@ public class GitHubService extends IntentService {
         Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
         intent.setAction(ACTION_GET_TOKEN);
         intent.putExtra(GetOAuthToken.EXTRA_CODE, code);
+        BaseApplication.getContext().startService(intent);
+    }
+
+    /**
+     * Sends GET request to GitHub API to retrieve logged in user information
+     */
+    public static void getLoggedUser () {
+        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
+        intent.setAction(ACTION_GET_LOGGED_USER);
+        BaseApplication.getContext().startService(intent);
+    }
+
+    /**
+     * Cancel all pending requests
+     */
+    public static void stopService() {
+        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
+        intent.setAction(ACTION_STOP);
         BaseApplication.getContext().startService(intent);
     }
 
@@ -90,6 +99,10 @@ public class GitHubService extends IntentService {
         switch (action) {
             case ACTION_GET_TOKEN:
                 GitHubClient.getInstance().send(new GetOAuthToken(intent));
+                break;
+
+            case ACTION_GET_LOGGED_USER:
+                GitHubClient.getInstance().send(new GetLoggedUser());
                 break;
 
             case ACTION_STOP:
