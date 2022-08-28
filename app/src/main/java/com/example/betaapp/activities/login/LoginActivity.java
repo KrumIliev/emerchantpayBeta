@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.betaapp.R;
+import com.example.betaapp.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity implements Login.View {
 
@@ -21,9 +22,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
 
     private Login.Presenter presenter;
 
-    private Button btnLogin;
-
-    private View progress;
+    private ActivityLoginBinding viewBinding;
 
     // -------------------------------------------------------------------------------
     // Lifecycle
@@ -32,14 +31,13 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
+        viewBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(viewBinding.getRoot());
 
         presenter = new LoginPresenter(this);
 
-        btnLogin = findViewById(R.id.login);
-        progress = findViewById(R.id.login_progress);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        viewBinding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.onLoginClick(LoginActivity.this);
@@ -77,8 +75,8 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
 
     @Override
     public void showLoading() {
-        btnLogin.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
+        viewBinding.loginButton.setVisibility(View.GONE);
+        viewBinding.loginProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
             Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
         }
 
-        btnLogin.setVisibility(View.VISIBLE);
-        progress.setVisibility(View.GONE);
+        viewBinding.loginButton.setVisibility(View.VISIBLE);
+        viewBinding.loginProgress.setVisibility(View.GONE);
     }
 }
