@@ -51,6 +51,10 @@ public class ConnectivityMonitor {
         connectivityManager.requestNetwork(networkRequest, networkCallback);
     }
 
+    public boolean hasInternetConnection () {
+        return hasInternetConnection;
+    }
+
     // -------------------------------------------------------------------------------
     // Other
     // -------------------------------------------------------------------------------

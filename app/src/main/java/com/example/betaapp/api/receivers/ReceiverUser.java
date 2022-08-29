@@ -21,7 +21,9 @@ public class ReceiverUser extends ReceiverBase {
 
     private static final String ACTION_USER_LOAD_FAILED = "com.example.betaapp.api.receivers.ACTION_USER_LOAD_FAILED";
 
-    private static final String EXTRA_USER_ID = "com.example.betaapp.api.receivers.EXTRA_USER_ID";
+    private static final String EXTRA_USER_DATA = "com.example.betaapp.api.receivers.EXTRA_USER_DATA";
+
+    private static final String EXTRA_USER_NAME = "com.example.betaapp.api.receivers.EXTRA_USER_NAME";
 
     private final OnUserLoadingCompleted completeListener;
 
@@ -49,16 +51,11 @@ public class ReceiverUser extends ReceiverBase {
         Log.d(LOG_TAG, "onReceive : " + action);
         switch (action) {
             case ACTION_USER_LOADED:
-                long userId = data.getLongExtra(EXTRA_USER_ID, -1);
-                if (userId != -1) {
-                    completeListener.onUserLoaded(DAOUsers.getUserById(userId));
-                } else {
-                    completeListener.onUserLoadingFailed();
-                }
+                completeListener.onUserLoaded((DBOUser) data.getSerializableExtra(EXTRA_USER_DATA));
                 break;
 
             case ACTION_USER_LOAD_FAILED:
-                completeListener.onUserLoadingFailed();
+                completeListener.onUserLoadingFailed(data.getStringExtra(EXTRA_USER_NAME));
                 break;
         }
 
@@ -68,14 +65,16 @@ public class ReceiverUser extends ReceiverBase {
     // Public
     // -------------------------------------------------------------------------------
 
-    public static void broadcastUserLoaded(long id) {
+    public static void broadcastUserLoaded(DBOUser user) {
         Intent intent = new Intent(ACTION_USER_LOADED);
-        intent.putExtra(EXTRA_USER_ID, id);
+        intent.putExtra(EXTRA_USER_DATA, user);
         BaseApplication.getContext().sendBroadcast(intent);
     }
 
-    public static void broadcastUserLoadingFailed() {
-        BaseApplication.getContext().sendBroadcast(new Intent(ACTION_USER_LOAD_FAILED));
+    public static void broadcastUserLoadingFailed(String userName) {
+        Intent intent = new Intent(ACTION_USER_LOAD_FAILED);
+        intent.putExtra(EXTRA_USER_NAME, userName);
+        BaseApplication.getContext().sendBroadcast(intent);
     }
 
     // -------------------------------------------------------------------------------
@@ -85,6 +84,9 @@ public class ReceiverUser extends ReceiverBase {
     public interface OnUserLoadingCompleted {
         void onUserLoaded(DBOUser user);
 
-        void onUserLoadingFailed();
+        /**
+         * @param userName the requested user name or null of retrieving logged user
+         */
+        void onUserLoadingFailed(String userName);
     }
 }

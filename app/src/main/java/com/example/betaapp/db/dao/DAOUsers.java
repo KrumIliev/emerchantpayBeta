@@ -26,28 +26,32 @@ public class DAOUsers extends DAOBase {
         values.put(TableUsers.USER_AVATAR_URL, user.getAvatarUrl());
         values.put(TableUsers.USER_FOLLOWERS, user.getFollowers());
         values.put(TableUsers.USER_FOLLOWING, user.getFollowing());
+        values.put(TableUsers.USER_IS_LOGGED, user.isLogged());
 
         Uri uri = BaseApplication.getContext().getContentResolver().insert(TableUsers.CONTENT_URI, values);
         return Long.parseLong(uri.getLastPathSegment());
     }
 
-    public static DBOUser getUserById(long id) {
+    public static DBOUser getLoggedUser() {
+        String where = TableUsers.USER_IS_LOGGED + "=?";
+        String[] whereArgs = {Boolean.toString(true)};
+        return getUser(where, whereArgs);
+    }
+
+    public static DBOUser getUserByName(String userName) {
+        String where = TableUsers.USER_NAME + "=?";
+        String[] whereArgs = {userName};
+        return getUser(where, whereArgs);
+    }
+
+    private static DBOUser getUser(String where, String[] whereArgs) {
         Cursor cursor = null;
         DBOUser user = null;
 
         try {
-            String where = TableUsers._ID + "=?";
-            String[] whereArgs = {Long.toString(id)};
-
             cursor = BaseApplication.getContext().getContentResolver().query(TableUsers.CONTENT_URI, null, where, whereArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                user = new DBOUser();
-                user.setId(cursor.getLong(cursor.getColumnIndexOrThrow(TableUsers._ID)));
-                user.setUserName(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_NAME)));
-                user.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_DISPLAY_NAME)));
-                user.setAvatarUrl(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_AVATAR_URL)));
-                user.setFollowers(cursor.getInt(cursor.getColumnIndexOrThrow(TableUsers.USER_FOLLOWERS)));
-                user.setFollowing(cursor.getInt(cursor.getColumnIndexOrThrow(TableUsers.USER_FOLLOWING)));
+                user = getUserFromCursor(cursor);
             }
 
         } catch (Exception e) {
@@ -59,6 +63,17 @@ public class DAOUsers extends DAOBase {
             }
         }
 
+        return user;
+    }
+
+    private static DBOUser getUserFromCursor(Cursor cursor) {
+        DBOUser user = new DBOUser();
+        user.setId(cursor.getLong(cursor.getColumnIndexOrThrow(TableUsers._ID)));
+        user.setUserName(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_NAME)));
+        user.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_DISPLAY_NAME)));
+        user.setAvatarUrl(cursor.getString(cursor.getColumnIndexOrThrow(TableUsers.USER_AVATAR_URL)));
+        user.setFollowers(cursor.getInt(cursor.getColumnIndexOrThrow(TableUsers.USER_FOLLOWERS)));
+        user.setFollowing(cursor.getInt(cursor.getColumnIndexOrThrow(TableUsers.USER_FOLLOWING)));
         return user;
     }
 }

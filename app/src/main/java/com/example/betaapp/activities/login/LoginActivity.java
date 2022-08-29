@@ -2,19 +2,16 @@ package com.example.betaapp.activities.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.betaapp.R;
 import com.example.betaapp.activities.user.UserActivity;
 import com.example.betaapp.databinding.ActivityLoginBinding;
 
-public class LoginActivity extends AppCompatActivity implements Login.View {
+public class LoginActivity extends AppCompatActivity implements LoginInterfaces.View {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -22,7 +19,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
 
     private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
-    private Login.Presenter presenter;
+    private LoginInterfaces.Presenter presenter;
 
     private ActivityLoginBinding viewBinding;
 
@@ -84,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements Login.View {
     @Override
     public void loadingComplete(boolean isSuccessful) {
         if (isSuccessful) {
-            startActivity(new Intent(this, UserActivity.class));
+            UserActivity.startActivity(this, null);
         } else {
             Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
         }

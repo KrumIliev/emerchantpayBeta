@@ -4,11 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.example.betaapp.utils.ReceiverBinding;
+import com.example.betaapp.utils.ReceiverLifecycle;
 
 /**
- * MVP interfaces for Login
+ * MVP interfaces for Login page
  */
-public interface Login {
+public interface LoginInterfaces {
 
     interface View {
         void showLoading();
@@ -26,12 +27,8 @@ public interface Login {
         void extractCode(Uri uri);
     }
 
-    interface Presenter {
+    interface Presenter extends ReceiverLifecycle {
         void onLoginClick(Context context);
-
-        void onStart(Context context);
-
-        void onStop(Context context);
 
         void onResume(Uri uri);
 

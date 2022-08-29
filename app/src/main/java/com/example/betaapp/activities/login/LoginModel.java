@@ -7,7 +7,7 @@ import android.util.Log;
 import com.example.betaapp.api.receivers.ReceiverAuthentication;
 import com.example.betaapp.api.GitHubAuthenticator;
 
-public class LoginModel implements Login.Model, ReceiverAuthentication.AuthenticationCompleteListener {
+public class LoginModel implements LoginInterfaces.Model, ReceiverAuthentication.AuthenticationCompleteListener {
 
     // -------------------------------------------------------------------------------
     // Fields

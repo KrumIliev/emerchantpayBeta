@@ -2,7 +2,9 @@ package com.example.betaapp.db.models;
 
 import com.example.betaapp.api.models.response.ResponseUser;
 
-public class DBOUser extends DBOBase {
+import java.io.Serializable;
+
+public class DBOUser extends DBOBase implements Serializable {
 
     private String userName;
 
@@ -14,6 +16,8 @@ public class DBOUser extends DBOBase {
 
     private int following;
 
+    private boolean isLogged;
+
     public DBOUser() {}
 
     public DBOUser(ResponseUser user) {
@@ -22,6 +26,14 @@ public class DBOUser extends DBOBase {
         setAvatarUrl(user.getAvatarUrl());
         setFollowers(user.getFollowers());
         setFollowing(user.getFollowing());
+    }
+
+    public boolean isLogged() {
+        return isLogged;
+    }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
     }
 
     public String getUserName() {

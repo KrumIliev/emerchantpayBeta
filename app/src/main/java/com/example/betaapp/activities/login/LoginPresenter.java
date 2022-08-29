@@ -5,7 +5,7 @@ import android.net.Uri;
 
 import com.example.betaapp.utils.Cache;
 
-public class LoginPresenter implements Login.Presenter, Login.Model.OnLoginFinishListener {
+public class LoginPresenter implements LoginInterfaces.Presenter, LoginInterfaces.Model.OnLoginFinishListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -13,9 +13,9 @@ public class LoginPresenter implements Login.Presenter, Login.Model.OnLoginFinis
 
     private static final String LOG_TAG = LoginPresenter.class.getSimpleName();
 
-    private Login.View view;
+    private LoginInterfaces.View view;
 
-    private Login.Model model;
+    private LoginInterfaces.Model model;
 
     // -------------------------------------------------------------------------------
     // Instance creations

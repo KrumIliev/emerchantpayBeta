@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.example.betaapp.BaseApplication;
 import com.example.betaapp.api.actions.GetOAuthToken;
 import com.example.betaapp.api.actions.GetLoggedUser;
+import com.example.betaapp.api.actions.GetUser;
 
 public class GitHubService extends IntentService {
 
@@ -22,6 +23,7 @@ public class GitHubService extends IntentService {
     private static final String ACTION_BASE = "com.example.betaapp.api.";
     private static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
     private static final String ACTION_GET_LOGGED_USER = ACTION_BASE + "ACTION_GET_LOGGED_USER";
+    private static final String ACTION_GET_USER = ACTION_BASE + "ACTION_GET_USER";
     private static final String ACTION_STOP = ACTION_BASE + "ACTION_STOP";
 
     // -------------------------------------------------------------------------------
@@ -72,9 +74,19 @@ public class GitHubService extends IntentService {
     /**
      * Sends GET request to GitHub API to retrieve logged in user information
      */
-    public static void getLoggedUser () {
+    public static void getLoggedUser() {
         Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
         intent.setAction(ACTION_GET_LOGGED_USER);
+        BaseApplication.getContext().startService(intent);
+    }
+
+    /**
+     * Sends GET request to GitHub API to retrieve user information based on user name
+     */
+    public static void getUser(String userName) {
+        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
+        intent.setAction(ACTION_GET_USER);
+        intent.putExtra(GetUser.EXTRA_USER_NAME, userName);
         BaseApplication.getContext().startService(intent);
     }
 
@@ -94,7 +106,7 @@ public class GitHubService extends IntentService {
     /**
      * Handler for all service actions.
      */
-    private void handleAction (String action, Intent intent) {
+    private void handleAction(String action, Intent intent) {
         Log.d(LOG_TAG, "Action: " + action);
         switch (action) {
             case ACTION_GET_TOKEN:
@@ -103,6 +115,10 @@ public class GitHubService extends IntentService {
 
             case ACTION_GET_LOGGED_USER:
                 GitHubClient.getInstance().send(new GetLoggedUser());
+                break;
+
+            case ACTION_GET_USER:
+                GitHubClient.getInstance().send(new GetUser(intent));
                 break;
 
             case ACTION_STOP:
