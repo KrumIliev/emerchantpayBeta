@@ -40,7 +40,6 @@
         <activity
             android:name=".activities.user.UserActivity"
             android:exported="false"
-            android:label="@string/title_activity_user"
             android:theme="@style/Theme.BetaApp.NoActionBar" />
 
         <service android:name=".api.GitHubService" />

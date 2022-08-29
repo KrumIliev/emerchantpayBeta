@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.betaapp.R;
 import com.example.betaapp.activities.user.UserActivity;
 import com.example.betaapp.databinding.ActivityLoginBinding;
 
@@ -82,11 +83,11 @@ public class LoginActivity extends AppCompatActivity implements LoginInterfaces.
     public void loadingComplete(boolean isSuccessful) {
         if (isSuccessful) {
             UserActivity.startActivity(this, null);
-        } else {
-            Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
-        }
 
-        viewBinding.loginButton.setVisibility(View.VISIBLE);
-        viewBinding.loginProgress.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(this, R.string.login_failed_message, Toast.LENGTH_SHORT).show();
+            viewBinding.loginButton.setVisibility(View.VISIBLE);
+            viewBinding.loginProgress.setVisibility(View.GONE);
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.example.betaapp.api.GitHubService;
 import com.example.betaapp.api.receivers.ReceiverUser;
 import com.example.betaapp.databinding.ActivityUserBinding;
@@ -53,8 +54,12 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         setSupportActionBar(viewBinding.toolbar);
 
         presenter = new UserPresenter(this);
-
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
+
+        viewBinding.userStarredContainer.setOnClickListener(view -> presenter.onStarredClick(UserActivity.this));
+        viewBinding.userRepositoriesContainer.setOnClickListener(view -> presenter.onRepositoryClick(UserActivity.this));
+        viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this));
+        viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this));
     }
 
     @Override
@@ -81,23 +86,31 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
 
     @Override
     public void showLoading() {
-        viewBinding.userText.setVisibility(View.GONE);
+        viewBinding.userDataContainer.setVisibility(View.GONE);
+        viewBinding.userError.setVisibility(View.GONE);
         viewBinding.userProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        viewBinding.userText.setVisibility(View.VISIBLE);
+        viewBinding.userDataContainer.setVisibility(View.VISIBLE);
+        viewBinding.userError.setVisibility(View.GONE);
         viewBinding.userProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void showUserData(DBOUser user) {
-        viewBinding.userText.setText(user.toString());
+        viewBinding.userDisplayName.setText(user.getDisplayName());
+        viewBinding.userName.setText(user.getUserName());
+        Glide.with(this).load(user.getAvatarUrl()).into(viewBinding.userAvatar);
+        viewBinding.userFollowersCount.setText(String.valueOf(user.getFollowers()));
+        viewBinding.userFollowingCount.setText(String.valueOf(user.getFollowing()));
     }
 
     @Override
     public void showUserError() {
-        viewBinding.userText.setText("User failed to load");
+        viewBinding.userDataContainer.setVisibility(View.GONE);
+        viewBinding.userProgress.setVisibility(View.GONE);
+        viewBinding.userError.setVisibility(View.VISIBLE);
     }
 }

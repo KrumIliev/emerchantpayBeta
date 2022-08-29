@@ -33,5 +33,13 @@ public interface UserInterfaces {
 
     interface Presenter extends ReceiverLifecycle {
         void getUserData(String userName);
+
+        void onFollowersClick(Context context);
+
+        void onFollowingClick(Context context);
+
+        void onRepositoryClick(Context context);
+
+        void onStarredClick(Context context);
     }
 }

@@ -2,4 +2,12 @@
     <string name="app_name">BetaApp</string>
     <string name="btn_login">Login</string>
     <string name="title_activity_user">User</string>
+    <string name="hint_avatar">Avatar</string>
+    <string name="login_failed_message">Login failed!</string>
+
+    <string name="user_followers">Followers</string>
+    <string name="user_following">Following</string>
+    <string name="user_starred">Starred</string>
+    <string name="user_repositories">Repositories</string>
+    <string name="user_loading_error">User data error!</string>
 </resources>
