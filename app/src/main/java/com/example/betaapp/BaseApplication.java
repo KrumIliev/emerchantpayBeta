@@ -3,6 +3,8 @@ package com.example.betaapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.betaapp.utils.ConnectivityMonitor;
+
 public class BaseApplication extends Application {
 
     // -------------------------------------------------------------------------------
@@ -19,6 +21,7 @@ public class BaseApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         application = this;
+        ConnectivityMonitor.getInstance().register(this);
     }
 
     // -------------------------------------------------------------------------------
