@@ -45,6 +45,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTextView().setText(repos.get(position).getName());
+        holder.starView.setVisibility(repos.get(position).isStarred() ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -73,11 +74,13 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView textView;
+        private final View starView;
         private final OnRepoClickListener listener;
 
         public ViewHolder(View view, OnRepoClickListener listener) {
             super(view);
             this.textView = (TextView) view.findViewById(R.id.repo_text);
+            this.starView = view.findViewById(R.id.repo_star);
             this.listener = listener;
             view.setOnClickListener(this);
         }
