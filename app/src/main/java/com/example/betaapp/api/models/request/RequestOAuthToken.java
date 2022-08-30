@@ -2,7 +2,7 @@ package com.example.betaapp.api.models.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RequestOAuthToken extends RequestDTO {
+public class RequestOAuthToken {
 
     @SerializedName("client_id")
     private String clientId;

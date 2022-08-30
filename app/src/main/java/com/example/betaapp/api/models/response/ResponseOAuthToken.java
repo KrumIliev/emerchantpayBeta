@@ -2,7 +2,7 @@ package com.example.betaapp.api.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseOAuthToken extends ResponseDTO {
+public class ResponseOAuthToken {
 
     @SerializedName("access_token")
     private String accessToken;

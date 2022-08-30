@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.betaapp.api.models.request.RequestDTO;
 import com.example.betaapp.api.models.response.ResponseRepo;
 
 import java.lang.reflect.Type;
@@ -19,7 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetReposList extends GitHubRequest<RequestDTO> {
+public class GetReposList extends GitHubRequest<Void> {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -45,7 +44,7 @@ public class GetReposList extends GitHubRequest<RequestDTO> {
     // -------------------------------------------------------------------------------
 
     @Override
-    protected RequestDTO getRequest() {
+    protected Void getRequest() {
         return null;
     }
 

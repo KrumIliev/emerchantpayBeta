@@ -5,15 +5,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
-import com.example.betaapp.api.models.request.RequestDTO;
-import com.example.betaapp.api.models.response.ResponseDTO;
-import com.example.betaapp.api.models.response.ResponseOAuthToken;
 import com.example.betaapp.api.models.response.ResponseUser;
 import com.example.betaapp.api.receivers.ReceiverUser;
 import com.example.betaapp.db.dao.DAOUsers;
 import com.example.betaapp.db.models.DBOUser;
 
-public class GetUser extends GitHubRequest<RequestDTO> {
+public class GetUser extends GitHubRequest<Void> {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -39,7 +36,7 @@ public class GetUser extends GitHubRequest<RequestDTO> {
     // -------------------------------------------------------------------------------
 
     @Override
-    protected RequestDTO getRequest() {
+    protected Void getRequest() {
         return null;
     }
 
@@ -65,8 +62,8 @@ public class GetUser extends GitHubRequest<RequestDTO> {
 
     /**
      * @return Formatted URL
-     *  <p> -> https://api.github.com/users/USERNAME
-     *  <p> -> https://api.github.com/user
+     * <p> -> https://api.github.com/users/USERNAME
+     * <p> -> https://api.github.com/user
      */
     private static String getURL(Intent intent) {
         StringBuilder builder = new StringBuilder();

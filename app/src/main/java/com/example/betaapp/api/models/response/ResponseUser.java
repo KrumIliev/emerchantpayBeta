@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseUser extends ResponseDTO {
+public class ResponseUser {
 
     @SerializedName("login")
     private String userName;
