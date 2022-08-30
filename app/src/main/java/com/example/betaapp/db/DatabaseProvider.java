@@ -8,14 +8,19 @@ import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.betaapp.BuildConfig;
 import com.example.betaapp.db.dao.DAOBase;
+import com.example.betaapp.db.dao.DAORepos;
 import com.example.betaapp.db.dao.DAOUsers;
+import com.example.betaapp.db.tables.TableRepos;
 import com.example.betaapp.db.tables.TableUsers;
 
 public class DatabaseProvider extends ContentProvider {
+
+    // -------------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------------
 
     private static final String LOG_TAG = DatabaseProvider.class.getSimpleName();
 
@@ -25,10 +30,15 @@ public class DatabaseProvider extends ContentProvider {
 
     private DatabaseHelper dbHelper;
 
+    // -------------------------------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------------------------------
+
     @Override
     public boolean onCreate() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, TableUsers.TABLE_NAME, TableUsers.URI_CODE);
+        uriMatcher.addURI(AUTHORITY, TableRepos.TABLE_NAME, TableRepos.URI_CODE);
 
         dbHelper = new DatabaseHelper(getContext(), BuildConfig.VERSION_CODE);
 
@@ -41,6 +51,10 @@ public class DatabaseProvider extends ContentProvider {
         dbHelper.close();
         super.shutdown();
     }
+
+    // -------------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------------
 
     @Override
     public String getType(@NonNull Uri uri) {
@@ -67,10 +81,17 @@ public class DatabaseProvider extends ContentProvider {
         return getDao(uri).delete(dbHelper, uri, selection, selectionArgs);
     }
 
+    // -------------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------------
+
     private DAOBase getDao(Uri uri) {
         switch (uriMatcher.match(uri)) {
             case TableUsers.URI_CODE:
                 return new DAOUsers();
+
+            case TableRepos.URI_CODE:
+                return new DAORepos();
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

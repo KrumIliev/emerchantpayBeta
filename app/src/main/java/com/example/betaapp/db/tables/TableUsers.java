@@ -1,9 +1,6 @@
 package com.example.betaapp.db.tables;
 
 import android.net.Uri;
-import android.provider.BaseColumns;
-
-import com.example.betaapp.db.DatabaseProvider;
 
 public class TableUsers extends BaseTable {
 

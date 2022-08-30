@@ -9,10 +9,13 @@ import com.bumptech.glide.Glide;
 import com.example.betaapp.api.GitHubService;
 import com.example.betaapp.api.receivers.ReceiverUser;
 import com.example.betaapp.databinding.ActivityUserBinding;
+import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.models.DBOUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity implements UserInterfaces.View {
 
@@ -56,7 +59,6 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         presenter = new UserPresenter(this);
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
 
-        viewBinding.userStarredContainer.setOnClickListener(view -> presenter.onStarredClick(UserActivity.this));
         viewBinding.userRepositoriesContainer.setOnClickListener(view -> presenter.onRepositoryClick(UserActivity.this));
         viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this));
         viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this));
@@ -99,12 +101,13 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
     }
 
     @Override
-    public void showUserData(DBOUser user) {
+    public void showUserData(DBOUser user, ArrayList<DBORepo> repos) {
         viewBinding.userDisplayName.setText(user.getDisplayName());
         viewBinding.userName.setText(user.getUserName());
         Glide.with(this).load(user.getAvatarUrl()).into(viewBinding.userAvatar);
         viewBinding.userFollowersCount.setText(String.valueOf(user.getFollowers()));
         viewBinding.userFollowingCount.setText(String.valueOf(user.getFollowing()));
+        viewBinding.userRepositoriesCount.setText(String.valueOf(repos.size()));
     }
 
     @Override

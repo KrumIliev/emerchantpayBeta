@@ -9,7 +9,7 @@ import com.example.betaapp.api.models.request.RequestOAuthToken;
 import com.example.betaapp.api.models.response.ResponseOAuthToken;
 import com.example.betaapp.api.receivers.ReceiverAuthentication;
 
-public class GetOAuthToken extends GitHubRequest<RequestOAuthToken, ResponseOAuthToken> {
+public class GetOAuthToken extends GitHubRequest<RequestOAuthToken> {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -28,7 +28,7 @@ public class GetOAuthToken extends GitHubRequest<RequestOAuthToken, ResponseOAut
     // -------------------------------------------------------------------------------
 
     public GetOAuthToken(Intent intent) {
-        super(Method.POST, URL, ResponseOAuthToken.class);
+        super(Method.POST, URL);
         this.code = intent.getStringExtra(EXTRA_CODE);
     }
 
@@ -42,9 +42,10 @@ public class GetOAuthToken extends GitHubRequest<RequestOAuthToken, ResponseOAut
     }
 
     @Override
-    protected void onRequestSuccess(ResponseOAuthToken response) {
-        Log.d(LOG_TAG, response.getAccessToken());
-        Cache.gitHubToken = response.getAccessToken();
+    protected void onRequestSuccess(String response) {
+        ResponseOAuthToken token = gson.fromJson(response, ResponseOAuthToken.class);
+        Log.d(LOG_TAG, token.getAccessToken());
+        Cache.gitHubToken = token.getAccessToken();
         ReceiverAuthentication.broadcastAuthenticationCompleted(true);
     }
 

@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.betaapp.BaseApplication;
 import com.example.betaapp.api.actions.GetOAuthToken;
-import com.example.betaapp.api.actions.GetLoggedUser;
+import com.example.betaapp.api.actions.GetReposList;
 import com.example.betaapp.api.actions.GetUser;
 
 public class GitHubService extends IntentService {
@@ -21,10 +21,10 @@ public class GitHubService extends IntentService {
     private static final String LOG_TAG = GitHubService.class.getSimpleName();
 
     private static final String ACTION_BASE = "com.example.betaapp.api.";
-    private static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
-    private static final String ACTION_GET_LOGGED_USER = ACTION_BASE + "ACTION_GET_LOGGED_USER";
-    private static final String ACTION_GET_USER = ACTION_BASE + "ACTION_GET_USER";
     private static final String ACTION_STOP = ACTION_BASE + "ACTION_STOP";
+    private static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
+    private static final String ACTION_GET_USER = ACTION_BASE + "ACTION_GET_USER";
+    private static final String ACTION_GET_REPOS = ACTION_BASE + "ACTION_GET_REPOS";
 
     // -------------------------------------------------------------------------------
     // Instance creations
@@ -72,21 +72,26 @@ public class GitHubService extends IntentService {
     }
 
     /**
-     * Sends GET request to GitHub API to retrieve logged in user information
-     */
-    public static void getLoggedUser() {
-        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
-        intent.setAction(ACTION_GET_LOGGED_USER);
-        BaseApplication.getContext().startService(intent);
-    }
-
-    /**
      * Sends GET request to GitHub API to retrieve user information based on user name
+     *
+     * @param userName username to query or null for logged user
      */
     public static void getUser(String userName) {
         Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
         intent.setAction(ACTION_GET_USER);
         intent.putExtra(GetUser.EXTRA_USER_NAME, userName);
+        BaseApplication.getContext().startService(intent);
+    }
+
+    /**
+     * Sends GET request to GitHub API to retrieve user repositories based on user name
+     *
+     * @param userName username to query or null for logged user
+     */
+    public static void getRepos(String userName) {
+        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
+        intent.setAction(ACTION_GET_REPOS);
+        intent.putExtra(GetReposList.EXTRA_USER_NAME, userName);
         BaseApplication.getContext().startService(intent);
     }
 
@@ -113,12 +118,12 @@ public class GitHubService extends IntentService {
                 GitHubClient.getInstance().send(new GetOAuthToken(intent));
                 break;
 
-            case ACTION_GET_LOGGED_USER:
-                GitHubClient.getInstance().send(new GetLoggedUser());
-                break;
-
             case ACTION_GET_USER:
                 GitHubClient.getInstance().send(new GetUser(intent));
+                break;
+
+            case ACTION_GET_REPOS:
+                GitHubClient.getInstance().send(new GetReposList(intent));
                 break;
 
             case ACTION_STOP:

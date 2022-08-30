@@ -2,9 +2,13 @@ package com.example.betaapp.activities.user;
 
 import android.content.Context;
 
+import com.example.betaapp.db.dao.DAORepos;
+import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.models.DBOUser;
 import com.example.betaapp.utils.ReceiverBinding;
 import com.example.betaapp.utils.ReceiverLifecycle;
+
+import java.util.ArrayList;
 
 /**
  * MVP interfaces for User page
@@ -16,7 +20,7 @@ public interface UserInterfaces {
 
         void hideLoading();
 
-        void showUserData(DBOUser user);
+        void showUserData(DBOUser user, ArrayList<DBORepo> repos);
 
         void showUserError();
     }
@@ -28,7 +32,15 @@ public interface UserInterfaces {
             void onUserLoadingFailed();
         }
 
+        interface OnReposLoadingFinishListener {
+            void onReposLoadingCompleted(ArrayList<DBORepo> repos);
+
+            void onReposLoadingFailed();
+        }
+
         void getUserData(String userName);
+
+        void getUserRepos(String userName);
     }
 
     interface Presenter extends ReceiverLifecycle {
@@ -39,7 +51,5 @@ public interface UserInterfaces {
         void onFollowingClick(Context context);
 
         void onRepositoryClick(Context context);
-
-        void onStarredClick(Context context);
     }
 }

@@ -8,6 +8,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 import com.example.betaapp.BaseApplication;
 import com.example.betaapp.api.actions.GitHubRequest;
+import com.example.betaapp.api.models.request.RequestDTO;
 
 public class GitHubClient extends HurlStack {
 

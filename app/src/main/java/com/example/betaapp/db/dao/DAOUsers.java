@@ -13,11 +13,23 @@ import java.util.Arrays;
 
 public class DAOUsers extends DAOBase {
 
+    // -------------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------------
+
     private static final String LOG_TAG = DAOUsers.class.getSimpleName();
+
+    // -------------------------------------------------------------------------------
+    // Instance creations
+    // -------------------------------------------------------------------------------
 
     public DAOUsers() {
         super(TableUsers.TABLE_NAME, TableUsers.CONTENT_URI);
     }
+
+    // -------------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------------
 
     public static long insertUser(DBOUser user) {
         ContentValues values = new ContentValues();
@@ -30,6 +42,31 @@ public class DAOUsers extends DAOBase {
 
         Uri uri = BaseApplication.getContext().getContentResolver().insert(TableUsers.CONTENT_URI, values);
         return Long.parseLong(uri.getLastPathSegment());
+    }
+
+    public static long getUserIdByName(String userName) {
+        Cursor cursor = null;
+        long id = -1;
+
+        try {
+            String where = TableUsers.USER_NAME + "=?";
+            String[] whereArgs = {userName};
+
+            cursor = BaseApplication.getContext().getContentResolver().query(TableUsers.CONTENT_URI, null, where, whereArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(TableUsers._ID));
+            }
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return id;
     }
 
     public static DBOUser getLoggedUser() {
@@ -65,6 +102,10 @@ public class DAOUsers extends DAOBase {
 
         return user;
     }
+
+    // -------------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------------
 
     private static DBOUser getUserFromCursor(Cursor cursor) {
         DBOUser user = new DBOUser();
