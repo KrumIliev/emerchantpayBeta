@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.betaapp.activities.user.utils.OnRepoClickListener;
+import com.example.betaapp.activities.user.utils.RepoListAdapter;
 import com.example.betaapp.api.GitHubService;
 import com.example.betaapp.api.receivers.ReceiverUser;
 import com.example.betaapp.databinding.ActivityUserBinding;
@@ -14,10 +17,12 @@ import com.example.betaapp.db.models.DBOUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
-public class UserActivity extends AppCompatActivity implements UserInterfaces.View {
+public class UserActivity extends AppCompatActivity implements UserInterfaces.View, OnRepoClickListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -30,6 +35,8 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
     private UserInterfaces.Presenter presenter;
 
     private String userName;
+
+    private RepoListAdapter repoListAdapter;
 
     // -------------------------------------------------------------------------------
     // Instance creations
@@ -59,9 +66,13 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         presenter = new UserPresenter(this);
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
 
-        viewBinding.userRepositoriesContainer.setOnClickListener(view -> presenter.onRepositoryClick(UserActivity.this));
-        viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this));
-        viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this));
+        viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this, userName));
+        viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this, userName));
+
+        repoListAdapter = new RepoListAdapter(this);
+        viewBinding.userRepositoriesList.setAdapter(repoListAdapter);
+        viewBinding.userRepositoriesList.setLayoutManager(new LinearLayoutManager(this));
+        viewBinding.userRepositoriesList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -108,6 +119,7 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         viewBinding.userFollowersCount.setText(String.valueOf(user.getFollowers()));
         viewBinding.userFollowingCount.setText(String.valueOf(user.getFollowing()));
         viewBinding.userRepositoriesCount.setText(String.valueOf(repos.size()));
+        repoListAdapter.updateList(repos);
     }
 
     @Override
@@ -115,5 +127,10 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         viewBinding.userDataContainer.setVisibility(View.GONE);
         viewBinding.userProgress.setVisibility(View.GONE);
         viewBinding.userError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onRepoClicked(int position) {
+        presenter.onRepositoryClick(this, repoListAdapter.getRepo(position));
     }
 }

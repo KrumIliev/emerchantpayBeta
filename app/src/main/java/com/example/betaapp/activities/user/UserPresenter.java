@@ -78,17 +78,17 @@ public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.M
     }
 
     @Override
-    public void onFollowersClick(Context context) {
+    public void onFollowersClick(Context context, String userName) {
         //TODO open user search activity
     }
 
     @Override
-    public void onFollowingClick(Context context) {
+    public void onFollowingClick(Context context, String userName) {
         //TODO open user search activity
     }
 
     @Override
-    public void onRepositoryClick(Context context) {
-        //TODO open repository list
+    public void onRepositoryClick(Context context, DBORepo repo) {
+        //TODO open user search activity
     }
 }

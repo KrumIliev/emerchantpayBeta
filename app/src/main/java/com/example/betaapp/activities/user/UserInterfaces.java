@@ -46,10 +46,10 @@ public interface UserInterfaces {
     interface Presenter extends ReceiverLifecycle {
         void getUserData(String userName);
 
-        void onFollowersClick(Context context);
+        void onFollowersClick(Context context, String userName);
 
-        void onFollowingClick(Context context);
+        void onFollowingClick(Context context, String userName);
 
-        void onRepositoryClick(Context context);
+        void onRepositoryClick(Context context, DBORepo repo);
     }
 }

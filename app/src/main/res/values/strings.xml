@@ -9,5 +9,6 @@
     <string name="user_following">Following</string>
     <string name="user_starred">Starred</string>
     <string name="user_repositories">Repositories</string>
-    <string name="user_loading_error">User data error!</string>
+    <string name="user_loading_error">User data error</string>
+    <string name="user_no_repo_error">User has no repositories</string>
 </resources>
