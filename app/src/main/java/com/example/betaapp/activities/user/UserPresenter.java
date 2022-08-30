@@ -7,7 +7,10 @@ import com.example.betaapp.db.models.DBOUser;
 
 import java.util.ArrayList;
 
-public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.Model.OnUserLoadingFinishListener, UserInterfaces.Model.OnReposLoadingFinishListener {
+public class UserPresenter implements
+        UserInterfaces.Presenter,
+        UserInterfaces.Model.OnUserLoadingFinishListener,
+        UserInterfaces.Model.OnReposLoadingFinishListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -19,15 +22,16 @@ public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.M
 
     private DBOUser user;
 
-    private ArrayList<DBORepo> repos;
+    private final String userName;
 
     // -------------------------------------------------------------------------------
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public UserPresenter(UserInterfaces.View view) {
+    public UserPresenter(UserInterfaces.View view, String userName) {
         this.view = view;
         this.model = new UserModel(this, this);
+        this.userName = userName;
     }
 
     // -------------------------------------------------------------------------------
@@ -45,9 +49,8 @@ public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.M
     }
 
     @Override
-    public void getUserData(String userName) {
+    public void getUserData() {
         user = null;
-        repos = new ArrayList<>();
         this.model.getUserData(userName);
         this.view.showLoading();
     }
@@ -55,7 +58,7 @@ public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.M
     @Override
     public void onUserLoadingCompleted(DBOUser user) {
         this.user = user;
-        model.getUserRepos(user.getUserName());
+        model.getUserRepos(userName);
     }
 
     @Override
@@ -66,13 +69,6 @@ public class UserPresenter implements UserInterfaces.Presenter, UserInterfaces.M
 
     @Override
     public void onReposLoadingCompleted(ArrayList<DBORepo> repos) {
-        view.hideLoading();
-        this.repos.addAll(repos);
-        view.showUserData(user, this.repos);
-    }
-
-    @Override
-    public void onReposLoadingFailed() {
         view.hideLoading();
         view.showUserData(user, repos);
     }

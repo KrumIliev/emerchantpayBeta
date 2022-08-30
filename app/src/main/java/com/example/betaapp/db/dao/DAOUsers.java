@@ -3,6 +3,7 @@ package com.example.betaapp.db.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.betaapp.BaseApplication;
@@ -44,13 +45,24 @@ public class DAOUsers extends DAOBase {
         return Long.parseLong(uri.getLastPathSegment());
     }
 
+    /**
+     * @param userName User name to search or null to get logged user id
+     */
     public static long getUserIdByName(String userName) {
         Cursor cursor = null;
         long id = -1;
 
         try {
-            String where = TableUsers.USER_NAME + "=?";
-            String[] whereArgs = {userName};
+            String where;
+            String[] whereArgs;
+            if (TextUtils.isEmpty(userName)) {
+                where = TableUsers.USER_IS_LOGGED + "=?";
+                whereArgs = new String[]{Integer.toString(1)};
+
+            } else {
+                where = TableUsers.USER_NAME + "=?";
+                whereArgs = new String[]{userName};
+            }
 
             cursor = BaseApplication.getContext().getContentResolver().query(TableUsers.CONTENT_URI, null, where, whereArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
@@ -71,7 +83,7 @@ public class DAOUsers extends DAOBase {
 
     public static DBOUser getLoggedUser() {
         String where = TableUsers.USER_IS_LOGGED + "=?";
-        String[] whereArgs = {Boolean.toString(true)};
+        String[] whereArgs = {Integer.toString(1)};
         return getUser(where, whereArgs);
     }
 

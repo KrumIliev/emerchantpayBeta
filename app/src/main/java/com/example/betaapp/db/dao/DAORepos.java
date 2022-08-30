@@ -37,19 +37,23 @@ public class DAORepos extends DAOBase {
         values.put(TableRepos.REPO_DESCRIPTION, repo.getDescription());
         values.put(TableRepos.REPO_IS_STARRED, repo.isStarred());
         values.put(TableRepos.REPO_USER_ID, repo.getUserId());
+        values.put(TableRepos.REPO_GIT_ID, repo.getGitId());
 
         Uri uri = BaseApplication.getContext().getContentResolver().insert(TableRepos.CONTENT_URI, values);
         return Long.parseLong(uri.getLastPathSegment());
     }
 
-    public static ArrayList<DBORepo> getReposByUserId(long userId) {
+    public static ArrayList<DBORepo> getAllRepos(long userId) {
+        String where = TableRepos.REPO_USER_ID + "=?";
+        String[] whereArgs = {Long.toString(userId)};
+        return getRepos(where, whereArgs);
+    }
+
+    public static ArrayList<DBORepo> getRepos(String where, String[] whereArgs) {
         ArrayList<DBORepo> repos = new ArrayList<>();
         Cursor cursor = null;
 
         try {
-            String where = TableRepos.REPO_USER_ID + "=?";
-            String[] whereArgs = {Long.toString(userId)};
-
             cursor = BaseApplication.getContext().getContentResolver().query(TableRepos.CONTENT_URI, null, where, whereArgs, null);
             if (cursor != null) {
                 while (cursor.moveToNext()) {

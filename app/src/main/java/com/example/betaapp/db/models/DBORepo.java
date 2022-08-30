@@ -14,12 +14,23 @@ public class DBORepo extends DBOBase implements Serializable {
 
     private long userId;
 
+    private long gitId;
+
     public DBORepo() {
     }
 
     public DBORepo(ResponseRepo responseRepo) {
+        this.gitId = responseRepo.getGitId();
         this.name = responseRepo.getName();
         this.description = responseRepo.getDescription();
+    }
+
+    public long getGitId() {
+        return gitId;
+    }
+
+    public void setGitId(long gitId) {
+        this.gitId = gitId;
     }
 
     public String getName() {

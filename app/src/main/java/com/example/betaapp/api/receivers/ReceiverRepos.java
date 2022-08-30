@@ -22,19 +22,26 @@ public class ReceiverRepos extends ReceiverBase {
 
     private static final String ACTION_REPOS_LOAD_FAILED = "com.example.betaapp.api.receivers.ACTION_REPOS_LOAD_FAILED";
 
+    private static final String ACTION_STARRED_REPOS_LOADED = "com.example.betaapp.api.receivers.ACTION_STARRED_REPOS_LOADED";
+
+    private static final String ACTION_STARRED_REPOS_LOAD_FAILED = "com.example.betaapp.api.receivers.ACTION_STARRED_REPOS_LOAD_FAILED";
+
     private static final String EXTRA_REPOS_DATA = "com.example.betaapp.api.receivers.EXTRA_REPOS_DATA";
 
     private static final String EXTRA_USER_NAME = "com.example.betaapp.api.receivers.EXTRA_USER_NAME";
 
-    private final OnRepositoryListLoadingCompleted completeListener;
+    private final OnRepositoryListLoadingCompleted reposCompleteListener;
+
+    private final OnStarredRepositoryListLoadingCompleted starredCompleteListener;
 
     // -------------------------------------------------------------------------------
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public ReceiverRepos(OnRepositoryListLoadingCompleted completeListener) {
+    public ReceiverRepos(OnRepositoryListLoadingCompleted reposCompleteListener, OnStarredRepositoryListLoadingCompleted starredCompleteListener) {
         super();
-        this.completeListener = completeListener;
+        this.reposCompleteListener = reposCompleteListener;
+        this.starredCompleteListener = starredCompleteListener;
     }
 
     // -------------------------------------------------------------------------------
@@ -45,6 +52,8 @@ public class ReceiverRepos extends ReceiverBase {
     protected void addActions(IntentFilter filter) {
         filter.addAction(ACTION_REPOS_LOADED);
         filter.addAction(ACTION_REPOS_LOAD_FAILED);
+        filter.addAction(ACTION_STARRED_REPOS_LOADED);
+        filter.addAction(ACTION_STARRED_REPOS_LOAD_FAILED);
     }
 
     @Override
@@ -52,11 +61,12 @@ public class ReceiverRepos extends ReceiverBase {
         Log.d(LOG_TAG, "onReceive : " + action);
         switch (action) {
             case ACTION_REPOS_LOADED:
-                completeListener.onRepoListLoadingCompleted((ArrayList<DBORepo>) data.getSerializableExtra(EXTRA_REPOS_DATA));
+                reposCompleteListener.onRepoListLoadingCompleted(
+                        data.getStringExtra(EXTRA_USER_NAME));
                 break;
 
-            case ACTION_REPOS_LOAD_FAILED:
-                completeListener.onRepoListLoadingFailed(data.getStringExtra(EXTRA_USER_NAME));
+            case ACTION_STARRED_REPOS_LOADED:
+                starredCompleteListener.onStarredRepoListLoadingCompleted(data.getStringExtra(EXTRA_USER_NAME));
                 break;
         }
     }
@@ -65,14 +75,14 @@ public class ReceiverRepos extends ReceiverBase {
     // Public
     // -------------------------------------------------------------------------------
 
-    public static void broadcastReposLoaded(ArrayList<DBORepo> repos) {
-        Intent intent = new Intent(ACTION_REPOS_LOADED);
-        intent.putExtra(EXTRA_REPOS_DATA, repos);
+    public static void broadcastReposLoaded(String userName, boolean starred) {
+        Intent intent = new Intent(starred ? ACTION_STARRED_REPOS_LOADED : ACTION_REPOS_LOADED);
+        intent.putExtra(EXTRA_USER_NAME, userName);
         BaseApplication.getContext().sendBroadcast(intent);
     }
 
-    public static void broadcastReposFailed(String userName) {
-        Intent intent = new Intent(ACTION_REPOS_LOAD_FAILED);
+    public static void broadcastReposFailed(String userName, boolean starred) {
+        Intent intent = new Intent(starred ? ACTION_STARRED_REPOS_LOAD_FAILED : ACTION_REPOS_LOAD_FAILED);
         intent.putExtra(EXTRA_USER_NAME, userName);
         BaseApplication.getContext().sendBroadcast(intent);
     }
@@ -82,8 +92,10 @@ public class ReceiverRepos extends ReceiverBase {
     // -------------------------------------------------------------------------------
 
     public interface OnRepositoryListLoadingCompleted {
-        void onRepoListLoadingCompleted(ArrayList<DBORepo> repos);
+        void onRepoListLoadingCompleted(String userName);
+    }
 
-        void onRepoListLoadingFailed(String userName);
+    public interface OnStarredRepositoryListLoadingCompleted {
+        void onStarredRepoListLoadingCompleted(String userName);
     }
 }

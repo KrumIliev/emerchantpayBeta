@@ -13,7 +13,7 @@ public class TableUsers extends BaseTable {
     public static final String USER_AVATAR_URL = "avatar_url";
     public static final String USER_FOLLOWERS = "followers";
     public static final String USER_FOLLOWING = "following";
-    public static final String USER_IS_LOGGED = "isLogged";
+    public static final String USER_IS_LOGGED = "is_logged";
 
     public static String getCreateSql() {
         StringBuilder sqlBuilder = new StringBuilder();

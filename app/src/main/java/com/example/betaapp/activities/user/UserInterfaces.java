@@ -34,8 +34,6 @@ public interface UserInterfaces {
 
         interface OnReposLoadingFinishListener {
             void onReposLoadingCompleted(ArrayList<DBORepo> repos);
-
-            void onReposLoadingFailed();
         }
 
         void getUserData(String userName);
@@ -44,7 +42,7 @@ public interface UserInterfaces {
     }
 
     interface Presenter extends ReceiverLifecycle {
-        void getUserData(String userName);
+        void getUserData();
 
         void onFollowersClick(Context context, String userName);
 

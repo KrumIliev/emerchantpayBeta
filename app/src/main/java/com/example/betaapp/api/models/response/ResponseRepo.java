@@ -4,11 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResponseRepo {
 
+    @SerializedName("id")
+    private long gitId;
+
     @SerializedName("name")
     private String name;
 
     @SerializedName("description")
     private String description;
+
+    public long getGitId() {
+        return gitId;
+    }
+
+    public void setGitId(long gitId) {
+        this.gitId = gitId;
+    }
 
     public String getName() {
         return name;

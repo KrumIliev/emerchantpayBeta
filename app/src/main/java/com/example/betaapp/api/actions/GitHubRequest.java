@@ -48,6 +48,8 @@ public abstract class GitHubRequest<R> extends Request<String> {
     public GitHubRequest(int method, String url, boolean addAccessToken) {
         super(method, url, null);
 
+        Log.d(LOG_TAG, "Executing request: " + url);
+
         gson = new GsonBuilder().setPrettyPrinting().create();
         this.addAccessToken = addAccessToken;
     }

@@ -63,8 +63,8 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
         setContentView(viewBinding.getRoot());
         setSupportActionBar(viewBinding.toolbar);
 
-        presenter = new UserPresenter(this);
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
+        presenter = new UserPresenter(this, userName);
 
         viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this, userName));
         viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this, userName));
@@ -90,7 +90,7 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.getUserData(userName);
+        presenter.getUserData();
     }
 
     // -------------------------------------------------------------------------------

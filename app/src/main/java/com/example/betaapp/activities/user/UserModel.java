@@ -2,6 +2,7 @@ package com.example.betaapp.activities.user;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.betaapp.api.GitHubService;
 import com.example.betaapp.api.receivers.ReceiverRepos;
@@ -14,11 +15,17 @@ import com.example.betaapp.utils.ConnectivityMonitor;
 
 import java.util.ArrayList;
 
-public class UserModel implements UserInterfaces.Model, ReceiverUser.OnUserLoadingCompleted, ReceiverRepos.OnRepositoryListLoadingCompleted {
+public class UserModel implements
+        UserInterfaces.Model,
+        ReceiverUser.OnUserLoadingCompleted,
+        ReceiverRepos.OnRepositoryListLoadingCompleted,
+        ReceiverRepos.OnStarredRepositoryListLoadingCompleted {
 
     // -------------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------------
+
+    private static final String LOG_TAG = UserModel.class.getSimpleName();
 
     private final OnUserLoadingFinishListener onUserLoadingFinishListener;
 
@@ -32,11 +39,13 @@ public class UserModel implements UserInterfaces.Model, ReceiverUser.OnUserLoadi
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public UserModel(OnUserLoadingFinishListener onUserLoadingFinishListener, OnReposLoadingFinishListener onReposLoadingFinishListener) {
+    public UserModel(OnUserLoadingFinishListener onUserLoadingFinishListener,
+                     OnReposLoadingFinishListener onReposLoadingFinishListener) {
+
         this.onUserLoadingFinishListener = onUserLoadingFinishListener;
         this.onReposLoadingFinishListener = onReposLoadingFinishListener;
         receiverUser = new ReceiverUser(this);
-        receiverRepos = new ReceiverRepos(this);
+        receiverRepos = new ReceiverRepos(this, this);
     }
 
     // -------------------------------------------------------------------------------
@@ -80,22 +89,29 @@ public class UserModel implements UserInterfaces.Model, ReceiverUser.OnUserLoadi
     @Override
     public void getUserRepos(String userName) {
         if (ConnectivityMonitor.getInstance().hasInternetConnection()) {
-            GitHubService.getRepos(userName);
+            // Get the user public and private repos
+            GitHubService.getRepos(userName, false);
 
         } else {
-            // If we don't have internet connection try fetching the user from the local storage
+            // If we don't have internet connection try fetching the repos from the local storage
             getReposFromLocalStorage(userName);
         }
     }
 
     @Override
-    public void onRepoListLoadingCompleted(ArrayList<DBORepo> repos) {
-        onReposLoadingFinishListener.onReposLoadingCompleted(repos);
+    public void onRepoListLoadingCompleted(String userName) {
+        if (ConnectivityMonitor.getInstance().hasInternetConnection()) {
+            // Get the user starred repos
+            GitHubService.getRepos(userName, true);
+
+        } else {
+            // If we don't have internet connection try fetching the repos from the local storage
+            getReposFromLocalStorage(userName);
+        }
     }
 
     @Override
-    public void onRepoListLoadingFailed(String userName) {
-        // Try fetching the repos from the local storage
+    public void onStarredRepoListLoadingCompleted(String userName) {
         getReposFromLocalStorage(userName);
     }
 
@@ -122,15 +138,10 @@ public class UserModel implements UserInterfaces.Model, ReceiverUser.OnUserLoadi
 
     private void getReposFromLocalStorage(String userName) {
         long userId = DAOUsers.getUserIdByName(userName);
+        ArrayList<DBORepo> repos = new ArrayList<>();
         if (userId != -1) {
-            ArrayList<DBORepo> repos = DAORepos.getReposByUserId(userId);
-            if (!repos.isEmpty()) {
-                onReposLoadingFinishListener.onReposLoadingCompleted(repos);
-            } else {
-                onReposLoadingFinishListener.onReposLoadingFailed();
-            }
-        } else {
-            onReposLoadingFinishListener.onReposLoadingFailed();
+            repos.addAll(DAORepos.getAllRepos(userId));
         }
+        onReposLoadingFinishListener.onReposLoadingCompleted(repos);
     }
 }

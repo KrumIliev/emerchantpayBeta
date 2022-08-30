@@ -88,10 +88,11 @@ public class GitHubService extends IntentService {
      *
      * @param userName username to query or null for logged user
      */
-    public static void getRepos(String userName) {
+    public static void getRepos(String userName, boolean getStarred) {
         Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
         intent.setAction(ACTION_GET_REPOS);
         intent.putExtra(GetReposList.EXTRA_USER_NAME, userName);
+        intent.putExtra(GetReposList.EXTRA_GET_STARRED, getStarred);
         BaseApplication.getContext().startService(intent);
     }
 
