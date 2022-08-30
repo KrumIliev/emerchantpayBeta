@@ -11,4 +11,7 @@
     <string name="user_repositories">Repositories</string>
     <string name="user_loading_error">User data error</string>
     <string name="user_no_repo_error">User has no repositories</string>
+
+    <string name="menu_profile">Profile</string>
+    <string name="menu_logout">Logout</string>
 </resources>

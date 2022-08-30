@@ -1,5 +1,6 @@
 package com.example.betaapp.activities.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,15 @@ public class LoginActivity extends AppCompatActivity implements LoginInterfaces.
     private LoginInterfaces.Presenter presenter;
 
     private ActivityLoginBinding viewBinding;
+
+    // -------------------------------------------------------------------------------
+    // Instance creations
+    // -------------------------------------------------------------------------------
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 
     // -------------------------------------------------------------------------------
     // Lifecycle

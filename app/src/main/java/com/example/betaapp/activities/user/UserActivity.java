@@ -3,10 +3,13 @@ package com.example.betaapp.activities.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.betaapp.R;
+import com.example.betaapp.activities.BaseActivity;
 import com.example.betaapp.activities.user.utils.OnRepoClickListener;
 import com.example.betaapp.activities.user.utils.RepoListAdapter;
 import com.example.betaapp.api.GitHubService;
@@ -22,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
-public class UserActivity extends AppCompatActivity implements UserInterfaces.View, OnRepoClickListener {
+public class UserActivity extends BaseActivity implements UserInterfaces.View, OnRepoClickListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -59,12 +62,19 @@ public class UserActivity extends AppCompatActivity implements UserInterfaces.Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setMenuRes(R.menu.main_user);
+
         viewBinding = ActivityUserBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         setSupportActionBar(viewBinding.toolbar);
 
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
         presenter = new UserPresenter(this, userName);
+
+        if (!TextUtils.isEmpty(userName)) {
+            // Show back navigation if this is not the logged user
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         viewBinding.userFollowingContainer.setOnClickListener(view -> presenter.onFollowingClick(UserActivity.this, userName));
         viewBinding.userFollowersContainer.setOnClickListener(view -> presenter.onFollowersClick(UserActivity.this, userName));
