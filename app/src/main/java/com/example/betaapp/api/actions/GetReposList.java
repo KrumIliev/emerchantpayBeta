@@ -11,6 +11,7 @@ import com.example.betaapp.api.models.response.ResponseRepo;
 import java.lang.reflect.Type;
 
 import com.example.betaapp.api.receivers.ReceiverRepos;
+import com.example.betaapp.db.dao.DAORepos;
 import com.example.betaapp.db.dao.DAOUsers;
 import com.example.betaapp.db.models.DBORepo;
 import com.google.gson.reflect.TypeToken;
@@ -59,6 +60,7 @@ public class GetReposList extends GitHubRequest<RequestDTO> {
             DBORepo dbo = new DBORepo(repo);
             dbo.setUserId(userId);
             dbo.setStarred(false);
+            DAORepos.insertRepo(dbo);
             dboRepos.add(dbo);
         }
 

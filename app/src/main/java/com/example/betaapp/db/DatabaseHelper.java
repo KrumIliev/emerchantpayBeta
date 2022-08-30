@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.betaapp.db.tables.TableRepos;
 import com.example.betaapp.db.tables.TableUsers;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -24,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Creating database");
 
         db.execSQL(TableUsers.getCreateSql());
+        db.execSQL(TableRepos.getCreateSql());
     }
 
     @Override
@@ -31,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(LOG_TAG, "Dropping database");
         // Drop all tables
         db.execSQL(TableUsers.getDropSql());
+        db.execSQL(TableRepos.getDropSql());
 
         // Recreate all tables
         onCreate(db);
