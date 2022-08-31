@@ -16,6 +16,8 @@ public class DBORepo extends DBOBase implements Serializable {
 
     private long gitId;
 
+    private String owner;
+
     public DBORepo() {
     }
 
@@ -23,6 +25,15 @@ public class DBORepo extends DBOBase implements Serializable {
         this.gitId = responseRepo.getGitId();
         this.name = responseRepo.getName();
         this.description = responseRepo.getDescription();
+        this.owner = responseRepo.getOwner().getUserName();
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public long getGitId() {

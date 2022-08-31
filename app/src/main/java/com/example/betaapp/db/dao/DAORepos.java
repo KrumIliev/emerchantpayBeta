@@ -38,6 +38,7 @@ public class DAORepos extends DAOBase {
         values.put(TableRepos.REPO_IS_STARRED, repo.isStarred());
         values.put(TableRepos.REPO_USER_ID, repo.getUserId());
         values.put(TableRepos.REPO_GIT_ID, repo.getGitId());
+        values.put(TableRepos.REPO_OWNER, repo.getOwner());
 
         Uri uri = BaseApplication.getContext().getContentResolver().insert(TableRepos.CONTENT_URI, values);
         return Long.parseLong(uri.getLastPathSegment());
@@ -109,6 +110,8 @@ public class DAORepos extends DAOBase {
         repo.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableRepos.REPO_NAME)));
         repo.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TableRepos.REPO_DESCRIPTION)));
         repo.setStarred(cursor.getInt(cursor.getColumnIndexOrThrow(TableRepos.REPO_IS_STARRED)) == 1);
+        repo.setGitId(cursor.getLong(cursor.getColumnIndexOrThrow(TableRepos.REPO_GIT_ID)));
+        repo.setOwner(cursor.getString(cursor.getColumnIndexOrThrow(TableRepos.REPO_OWNER)));
         return repo;
     }
 }

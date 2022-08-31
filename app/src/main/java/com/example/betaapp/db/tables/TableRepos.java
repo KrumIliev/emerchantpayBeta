@@ -13,6 +13,7 @@ public class TableRepos extends BaseTable {
     public static final String REPO_IS_STARRED = "is_starred";
     public static final String REPO_USER_ID = "user_id";
     public static final String REPO_GIT_ID = "git_id";
+    public static final String REPO_OWNER = "owner";
 
     public static String getCreateSql() {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -24,6 +25,7 @@ public class TableRepos extends BaseTable {
         sqlBuilder.append(REPO_IS_STARRED).append(" INTEGER DEFAULT 0, ");
         sqlBuilder.append(REPO_USER_ID).append(" INTEGER NOT NULL, ");
         sqlBuilder.append(REPO_GIT_ID).append(" INTEGER NOT NULL, ");
+        sqlBuilder.append(REPO_OWNER).append(" TEXT NOT NULL, ");
         sqlBuilder.append("UNIQUE(").append(REPO_GIT_ID).append(") ON CONFLICT REPLACE);");
 
         return sqlBuilder.toString();

@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "emp_db";
+    private static final String DATABASE_NAME = "emp.db";
 
     public DatabaseHelper(@Nullable Context context, int version) {
         super(context, DATABASE_NAME, null, version);
