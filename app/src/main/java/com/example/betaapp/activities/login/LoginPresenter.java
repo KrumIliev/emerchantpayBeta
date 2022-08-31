@@ -21,7 +21,7 @@ public class LoginPresenter implements LoginInterfaces.Presenter, LoginInterface
     // Instance creations
     // -------------------------------------------------------------------------------
 
-    public LoginPresenter(LoginActivity view) {
+    public LoginPresenter(LoginInterfaces.View view) {
         this.view = view;
         this.model = new LoginModel(this);
     }
