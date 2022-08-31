@@ -4,7 +4,7 @@
     package="com.example.betaapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".utils.BaseApplication"
@@ -40,6 +40,14 @@
         <activity
             android:name=".activities.user.UserActivity"
             android:exported="false"
+            android:label="@string/user_title"
+            android:theme="@style/Theme.BetaApp.NoActionBar" />
+
+        <activity
+            android:name=".activities.repository.RepositoryActivity"
+            android:exported="false"
+            android:label="@string/repo_title"
+            android:parentActivityName=".activities.user.UserActivity"
             android:theme="@style/Theme.BetaApp.NoActionBar" />
 
         <service android:name=".api.GitHubService" />

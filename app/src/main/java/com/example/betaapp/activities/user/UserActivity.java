@@ -102,7 +102,7 @@ public class UserActivity extends MenuActivity implements UserInterfaces.View, O
 
     @Override
     protected int setMenu() {
-        return TextUtils.isEmpty(userName) ? MENU_MAIN : MENU_USER;
+        return TextUtils.isEmpty(userName) ? MENU_USER : MENU_MAIN;
     }
 
     @Override

@@ -20,9 +20,9 @@ public abstract class MenuActivity extends AppCompatActivity {
     // Fields
     // -------------------------------------------------------------------------------
 
-    protected static final int MENU_USER = R.menu.main_user;
+    protected static final int MENU_USER = R.menu.menu_user;
 
-    protected static final int MENU_MAIN = R.menu.main_user;
+    protected static final int MENU_MAIN = R.menu.menu_main;
 
     // -------------------------------------------------------------------------------
     // Lifecycle
@@ -44,6 +44,10 @@ public abstract class MenuActivity extends AppCompatActivity {
             case R.id.menu_logout:
                 Cache.gitHubToken = null;
                 LoginActivity.startActivity(this);
+                return true;
+
+            case android.R.id.home:
+                finish();
                 return true;
 
             default:

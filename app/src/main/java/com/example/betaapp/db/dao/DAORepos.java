@@ -73,12 +73,39 @@ public class DAORepos extends DAOBase {
         return repos;
     }
 
+    public static DBORepo getRepoById(long id) {
+        Cursor cursor = null;
+        DBORepo repo = null;
+
+        try {
+
+            String where = TableRepos._ID + "=?";
+            String[] whereArgs = {Long.toString(id)};
+
+            cursor = BaseApplication.getContext().getContentResolver().query(TableRepos.CONTENT_URI, null, where, whereArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                repo = getRepoFromCursor(cursor);
+            }
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return repo;
+    }
+
     // -------------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------------
 
     private static DBORepo getRepoFromCursor(Cursor cursor) {
         DBORepo repo = new DBORepo();
+        repo.setId(cursor.getLong(cursor.getColumnIndexOrThrow(TableRepos._ID)));
         repo.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableRepos.REPO_NAME)));
         repo.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TableRepos.REPO_DESCRIPTION)));
         repo.setStarred(cursor.getInt(cursor.getColumnIndexOrThrow(TableRepos.REPO_IS_STARRED)) == 1);

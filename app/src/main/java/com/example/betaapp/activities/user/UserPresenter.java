@@ -1,7 +1,10 @@
 package com.example.betaapp.activities.user;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import com.example.betaapp.R;
+import com.example.betaapp.activities.repository.RepositoryActivity;
 import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.models.DBOUser;
 
@@ -62,16 +65,18 @@ public class UserPresenter implements
 
     @Override
     public void onFollowersClick(Context context, String userName) {
+        Toast.makeText(context, R.string.todo, Toast.LENGTH_SHORT).show();
         //TODO open user search activity
     }
 
     @Override
     public void onFollowingClick(Context context, String userName) {
+        Toast.makeText(context, R.string.todo, Toast.LENGTH_SHORT).show();
         //TODO open user search activity
     }
 
     @Override
     public void onRepositoryClick(Context context, DBORepo repo) {
-        //TODO open user search activity
+        RepositoryActivity.startActivity(context, repo.getId());
     }
 }
