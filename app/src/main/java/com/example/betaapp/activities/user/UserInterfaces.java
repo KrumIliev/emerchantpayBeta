@@ -2,11 +2,10 @@ package com.example.betaapp.activities.user;
 
 import android.content.Context;
 
-import com.example.betaapp.db.dao.DAORepos;
 import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.models.DBOUser;
 import com.example.betaapp.utils.ReceiverBinding;
-import com.example.betaapp.utils.ReceiverLifecycle;
+import com.example.betaapp.utils.Lifecycle;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,7 @@ public interface UserInterfaces {
         void getUserData();
     }
 
-    interface Presenter extends ReceiverLifecycle {
+    interface Presenter extends Lifecycle {
         void getUserData();
 
         void onFollowersClick(Context context, String userName);

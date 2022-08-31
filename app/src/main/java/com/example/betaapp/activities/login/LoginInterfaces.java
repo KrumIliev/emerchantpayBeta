@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.example.betaapp.utils.ReceiverBinding;
-import com.example.betaapp.utils.ReceiverLifecycle;
+import com.example.betaapp.utils.Lifecycle;
 
 /**
  * MVP interfaces for Login page
@@ -14,7 +14,11 @@ public interface LoginInterfaces {
     interface View {
         void showLoading();
 
-        void loadingComplete(boolean isSuccessful);
+        void hideLoading();
+
+        void onLoginSuccessful();
+
+        void onLoginFailed();
     }
 
     interface Model extends ReceiverBinding {
@@ -27,11 +31,9 @@ public interface LoginInterfaces {
         void extractCode(Uri uri);
     }
 
-    interface Presenter extends ReceiverLifecycle {
+    interface Presenter extends Lifecycle {
         void onLoginClick(Context context);
 
         void onResume(Uri uri);
-
-        void onDestroy();
     }
 }

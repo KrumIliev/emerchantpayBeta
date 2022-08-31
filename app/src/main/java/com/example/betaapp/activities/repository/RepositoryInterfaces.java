@@ -1,7 +1,7 @@
 package com.example.betaapp.activities.repository;
 
 import com.example.betaapp.utils.ReceiverBinding;
-import com.example.betaapp.utils.ReceiverLifecycle;
+import com.example.betaapp.utils.Lifecycle;
 
 public interface RepositoryInterfaces {
 
@@ -25,7 +25,7 @@ public interface RepositoryInterfaces {
         void starRepo();
     }
 
-    interface Presenter extends ReceiverLifecycle {
+    interface Presenter extends Lifecycle {
         void onStarClicked();
     }
 }

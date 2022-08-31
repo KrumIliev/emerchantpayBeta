@@ -90,14 +90,18 @@ public class LoginActivity extends AppCompatActivity implements LoginInterfaces.
     }
 
     @Override
-    public void loadingComplete(boolean isSuccessful) {
-        if (isSuccessful) {
-            UserActivity.startActivity(this, null);
+    public void hideLoading() {
+        viewBinding.loginButton.setVisibility(View.VISIBLE);
+        viewBinding.loginProgress.setVisibility(View.GONE);
+    }
 
-        } else {
-            Toast.makeText(this, R.string.login_failed_message, Toast.LENGTH_SHORT).show();
-            viewBinding.loginButton.setVisibility(View.VISIBLE);
-            viewBinding.loginProgress.setVisibility(View.GONE);
-        }
+    @Override
+    public void onLoginSuccessful() {
+        UserActivity.startActivity(this, null);
+    }
+
+    @Override
+    public void onLoginFailed() {
+        Toast.makeText(this, R.string.login_failed_message, Toast.LENGTH_SHORT).show();
     }
 }

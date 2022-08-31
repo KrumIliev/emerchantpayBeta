@@ -45,7 +45,12 @@ public class LoginPresenter implements LoginInterfaces.Presenter, LoginInterface
         Cache.isLoggingIn = false;
 
         if (view != null) {
-            view.loadingComplete(isSuccessful);
+            if (isSuccessful) {
+                view.onLoginSuccessful();
+            } else {
+                view.hideLoading();
+                view.onLoginFailed();
+            }
         }
     }
 

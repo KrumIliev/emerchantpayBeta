@@ -18,7 +18,7 @@ public class UserPresenter implements
     // Fields
     // -------------------------------------------------------------------------------
 
-    private final UserInterfaces.View view;
+    private UserInterfaces.View view;
 
     private final UserInterfaces.Model model;
 
@@ -46,21 +46,33 @@ public class UserPresenter implements
     }
 
     @Override
+    public void onDestroy() {
+        view = null;
+    }
+
+    @Override
     public void getUserData() {
+        if (view != null) {
+            this.view.showLoading();
+        }
+
         this.model.getUserData();
-        this.view.showLoading();
     }
 
     @Override
     public void onUserLoadingCompleted(DBOUser user, ArrayList<DBORepo> repos) {
-        view.hideLoading();
-        view.showUserData(user, repos);
+        if (view != null) {
+            view.hideLoading();
+            view.showUserData(user, repos);
+        }
     }
 
     @Override
     public void onUserLoadingFailed() {
-        view.hideLoading();
-        view.showUserError();
+        if (view != null) {
+            view.hideLoading();
+            view.showUserError();
+        }
     }
 
     @Override

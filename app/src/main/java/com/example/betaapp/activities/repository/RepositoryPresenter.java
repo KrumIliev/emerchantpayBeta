@@ -12,7 +12,7 @@ public class RepositoryPresenter implements RepositoryInterfaces.Presenter, Repo
 
     private static final String LOG_TAG = RepositoryPresenter.class.getSimpleName();
 
-    private final RepositoryInterfaces.View view;
+    private RepositoryInterfaces.View view;
 
     private final RepositoryInterfaces.Model model;
 
@@ -40,20 +40,32 @@ public class RepositoryPresenter implements RepositoryInterfaces.Presenter, Repo
     }
 
     @Override
+    public void onDestroy() {
+        view = null;
+    }
+
+    @Override
     public void onStarClicked() {
-        view.disableStarButton();
+        if (view != null) {
+            view.disableStarButton();
+        }
+
         model.starRepo();
     }
 
     @Override
     public void onStarSuccessful(boolean isStarred) {
-        view.enableStarButton();
-        view.updateStarStatus(isStarred);
+        if (view != null) {
+            view.enableStarButton();
+            view.updateStarStatus(isStarred);
+        }
     }
 
     @Override
     public void onStarFailed() {
-        view.enableStarButton();
-        view.showStarError();
+        if (view != null) {
+            view.enableStarButton();
+            view.showStarError();
+        }
     }
 }
