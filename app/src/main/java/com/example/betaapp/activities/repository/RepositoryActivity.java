@@ -11,11 +11,13 @@ import androidx.annotation.Nullable;
 
 import com.example.betaapp.R;
 import com.example.betaapp.activities.MenuActivity;
+import com.example.betaapp.api.GitHubService;
+import com.example.betaapp.api.receivers.ReceiverStar;
 import com.example.betaapp.databinding.ActivityRepositoryBinding;
 import com.example.betaapp.db.dao.DAORepos;
 import com.example.betaapp.db.models.DBORepo;
 
-public class RepositoryActivity extends MenuActivity {
+public class RepositoryActivity extends MenuActivity implements ReceiverStar.OnStarCompletedListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -28,6 +30,8 @@ public class RepositoryActivity extends MenuActivity {
     private ActivityRepositoryBinding viewBinding;
 
     private DBORepo repo;
+
+    private ReceiverStar receiverStar;
 
     // -------------------------------------------------------------------------------
     // Instance creations
@@ -52,6 +56,8 @@ public class RepositoryActivity extends MenuActivity {
         setSupportActionBar(viewBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        receiverStar = new ReceiverStar(this);
+
         viewBinding.repoName.setText(repo.getName());
         viewBinding.repoDescription.setText(repo.getDescription());
         setStarStatus();
@@ -61,13 +67,39 @@ public class RepositoryActivity extends MenuActivity {
         });
 
         viewBinding.repoStarContainer.setOnClickListener(view -> {
-            Toast.makeText(RepositoryActivity.this, R.string.todo, Toast.LENGTH_SHORT).show();
+            viewBinding.repoStarContainer.setEnabled(false);
+            GitHubService.starRepo(repo, !repo.isStarred());
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        receiverStar.register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        receiverStar.unregister(this);
     }
 
     @Override
     protected int setMenu() {
         return MENU_MAIN;
+    }
+
+    @Override
+    public void onStarSuccessful() {
+        viewBinding.repoStarContainer.setEnabled(true);
+        repo.setStarred(!repo.isStarred());
+        setStarStatus();
+    }
+
+    @Override
+    public void onStarFailed() {
+        viewBinding.repoStarContainer.setEnabled(true);
+        Toast.makeText(this, R.string.repo_star_error, Toast.LENGTH_LONG).show();
     }
 
     private void getRepoFromIntent(Intent intent) {

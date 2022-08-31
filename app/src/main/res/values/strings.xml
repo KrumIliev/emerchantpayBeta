@@ -21,6 +21,7 @@
     <string name="repo_contributors">Contributors</string>
     <string name="repo_star">Star</string>
     <string name="repo_un_star">Unstar</string>
+    <string name="repo_star_error">Staring failed!</string>
 
     <string name="todo">TODO</string>
 </resources>
