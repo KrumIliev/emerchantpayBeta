@@ -26,19 +26,13 @@ public interface UserInterfaces {
     }
 
     interface Model extends ReceiverBinding {
-        interface OnUserLoadingFinishListener {
-            void onUserLoadingCompleted(DBOUser user);
+        interface OnUserDataLoadFinishListener {
+            void onUserLoadingCompleted(DBOUser user, ArrayList<DBORepo> repos);
 
             void onUserLoadingFailed();
         }
 
-        interface OnReposLoadingFinishListener {
-            void onReposLoadingCompleted(ArrayList<DBORepo> repos);
-        }
-
-        void getUserData(String userName);
-
-        void getUserRepos(String userName);
+        void getUserData();
     }
 
     interface Presenter extends ReceiverLifecycle {

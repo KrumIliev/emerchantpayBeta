@@ -20,15 +20,9 @@ public class ReceiverRepos extends ReceiverBase {
 
     private static final String ACTION_REPOS_LOADED = "com.example.betaapp.api.receivers.ACTION_REPOS_LOADED";
 
-    private static final String ACTION_REPOS_LOAD_FAILED = "com.example.betaapp.api.receivers.ACTION_REPOS_LOAD_FAILED";
-
     private static final String ACTION_STARRED_REPOS_LOADED = "com.example.betaapp.api.receivers.ACTION_STARRED_REPOS_LOADED";
 
-    private static final String ACTION_STARRED_REPOS_LOAD_FAILED = "com.example.betaapp.api.receivers.ACTION_STARRED_REPOS_LOAD_FAILED";
-
     private static final String EXTRA_REPOS_DATA = "com.example.betaapp.api.receivers.EXTRA_REPOS_DATA";
-
-    private static final String EXTRA_USER_NAME = "com.example.betaapp.api.receivers.EXTRA_USER_NAME";
 
     private final OnRepositoryListLoadingCompleted reposCompleteListener;
 
@@ -51,9 +45,7 @@ public class ReceiverRepos extends ReceiverBase {
     @Override
     protected void addActions(IntentFilter filter) {
         filter.addAction(ACTION_REPOS_LOADED);
-        filter.addAction(ACTION_REPOS_LOAD_FAILED);
         filter.addAction(ACTION_STARRED_REPOS_LOADED);
-        filter.addAction(ACTION_STARRED_REPOS_LOAD_FAILED);
     }
 
     @Override
@@ -61,12 +53,11 @@ public class ReceiverRepos extends ReceiverBase {
         Log.d(LOG_TAG, "onReceive : " + action);
         switch (action) {
             case ACTION_REPOS_LOADED:
-                reposCompleteListener.onRepoListLoadingCompleted(
-                        data.getStringExtra(EXTRA_USER_NAME));
+                reposCompleteListener.onRepoListLoadingCompleted();
                 break;
 
             case ACTION_STARRED_REPOS_LOADED:
-                starredCompleteListener.onStarredRepoListLoadingCompleted(data.getStringExtra(EXTRA_USER_NAME));
+                starredCompleteListener.onStarredRepoListLoadingCompleted();
                 break;
         }
     }
@@ -75,16 +66,20 @@ public class ReceiverRepos extends ReceiverBase {
     // Public
     // -------------------------------------------------------------------------------
 
-    public static void broadcastReposLoaded(String userName, boolean starred) {
-        Intent intent = new Intent(starred ? ACTION_STARRED_REPOS_LOADED : ACTION_REPOS_LOADED);
-        intent.putExtra(EXTRA_USER_NAME, userName);
-        BaseApplication.getContext().sendBroadcast(intent);
+    public static void broadcastReposLoadComplete() {
+        broadcastReposResult(ACTION_REPOS_LOADED);
     }
 
-    public static void broadcastReposFailed(String userName, boolean starred) {
-        Intent intent = new Intent(starred ? ACTION_STARRED_REPOS_LOAD_FAILED : ACTION_REPOS_LOAD_FAILED);
-        intent.putExtra(EXTRA_USER_NAME, userName);
-        BaseApplication.getContext().sendBroadcast(intent);
+    public static void broadcastStarredReposLoadComplete() {
+        broadcastReposResult(ACTION_STARRED_REPOS_LOADED);
+    }
+
+    // -------------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------------
+
+    private static void broadcastReposResult(String action) {
+        BaseApplication.getContext().sendBroadcast(new Intent(action));
     }
 
     // -------------------------------------------------------------------------------
@@ -92,10 +87,10 @@ public class ReceiverRepos extends ReceiverBase {
     // -------------------------------------------------------------------------------
 
     public interface OnRepositoryListLoadingCompleted {
-        void onRepoListLoadingCompleted(String userName);
+        void onRepoListLoadingCompleted();
     }
 
     public interface OnStarredRepositoryListLoadingCompleted {
-        void onStarredRepoListLoadingCompleted(String userName);
+        void onStarredRepoListLoadingCompleted();
     }
 }

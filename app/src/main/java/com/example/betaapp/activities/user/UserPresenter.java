@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class UserPresenter implements
         UserInterfaces.Presenter,
-        UserInterfaces.Model.OnUserLoadingFinishListener,
-        UserInterfaces.Model.OnReposLoadingFinishListener {
+        UserInterfaces.Model.OnUserDataLoadFinishListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -20,18 +19,13 @@ public class UserPresenter implements
 
     private final UserInterfaces.Model model;
 
-    private DBOUser user;
-
-    private final String userName;
-
     // -------------------------------------------------------------------------------
     // Instance creations
     // -------------------------------------------------------------------------------
 
     public UserPresenter(UserInterfaces.View view, String userName) {
         this.view = view;
-        this.model = new UserModel(this, this);
-        this.userName = userName;
+        this.model = new UserModel(userName, this);
     }
 
     // -------------------------------------------------------------------------------
@@ -50,27 +44,20 @@ public class UserPresenter implements
 
     @Override
     public void getUserData() {
-        user = null;
-        this.model.getUserData(userName);
+        this.model.getUserData();
         this.view.showLoading();
     }
 
     @Override
-    public void onUserLoadingCompleted(DBOUser user) {
-        this.user = user;
-        model.getUserRepos(userName);
+    public void onUserLoadingCompleted(DBOUser user, ArrayList<DBORepo> repos) {
+        view.hideLoading();
+        view.showUserData(user, repos);
     }
 
     @Override
     public void onUserLoadingFailed() {
         view.hideLoading();
         view.showUserError();
-    }
-
-    @Override
-    public void onReposLoadingCompleted(ArrayList<DBORepo> repos) {
-        view.hideLoading();
-        view.showUserData(user, repos);
     }
 
     @Override

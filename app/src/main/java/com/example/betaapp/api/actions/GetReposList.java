@@ -68,13 +68,13 @@ public class GetReposList extends GitHubRequest<Void> {
             DAORepos.insertRepo(dbo);
         }
 
-        ReceiverRepos.broadcastReposLoaded(userName, getStarredRepos);
+        sendResult();
     }
 
     @Override
     protected void onRequestFailed(VolleyError volleyError) {
         Log.e(LOG_TAG, volleyError.getMessage());
-        ReceiverRepos.broadcastReposFailed(userName, getStarredRepos);
+        sendResult();
     }
 
     // -------------------------------------------------------------------------------
@@ -113,5 +113,13 @@ public class GetReposList extends GitHubRequest<Void> {
         }
 
         return builder.toString();
+    }
+
+    private void sendResult() {
+        if (getStarredRepos) {
+            ReceiverRepos.broadcastStarredReposLoadComplete();
+        } else {
+            ReceiverRepos.broadcastReposLoadComplete();
+        }
     }
 }

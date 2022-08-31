@@ -47,13 +47,13 @@ public class GetUser extends GitHubRequest<Void> {
         // When retrieving logged user we don't use user name
         user.setLogged(TextUtils.isEmpty(userName));
         DAOUsers.insertUser(user);
-        ReceiverUser.broadcastUserLoaded(user);
+        ReceiverUser.broadcastUserLoaded();
     }
 
     @Override
     protected void onRequestFailed(VolleyError volleyError) {
         Log.e(LOG_TAG, volleyError.getMessage());
-        ReceiverUser.broadcastUserLoadingFailed(userName);
+        ReceiverUser.broadcastUserLoaded();
     }
 
     // -------------------------------------------------------------------------------
