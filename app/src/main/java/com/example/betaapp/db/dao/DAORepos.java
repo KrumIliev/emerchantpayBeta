@@ -44,6 +44,16 @@ public class DAORepos extends DAOBase {
         return Long.parseLong(uri.getLastPathSegment());
     }
 
+    public static void updateStarStatus(long id, boolean starred) {
+        ContentValues values = new ContentValues();
+        values.put(TableRepos.REPO_IS_STARRED, starred);
+
+        String where = TableRepos._ID + "=?";
+        String[] whereArgs = {Long.toString(id)};
+
+        BaseApplication.getContext().getContentResolver().update(TableRepos.CONTENT_URI, values, where, whereArgs);
+    }
+
     public static ArrayList<DBORepo> getAllRepos(long userId) {
         String where = TableRepos.REPO_USER_ID + "=?";
         String[] whereArgs = {Long.toString(userId)};
