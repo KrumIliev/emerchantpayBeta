@@ -13,6 +13,9 @@ public class ResponseRepo {
     @SerializedName("description")
     private String description;
 
+    @SerializedName("owner")
+    private Owner owner;
+
     public long getGitId() {
         return gitId;
     }
@@ -37,11 +40,33 @@ public class ResponseRepo {
         this.description = description;
     }
 
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "RepoDTO{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public static class Owner {
+
+        @SerializedName("login")
+        private String userName;
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
     }
 }
