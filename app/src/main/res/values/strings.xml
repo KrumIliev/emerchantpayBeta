@@ -14,4 +14,9 @@
 
     <string name="menu_profile">Profile</string>
     <string name="menu_logout">Logout</string>
+
+    <string name="repo_description">Description</string>
+    <string name="repo_contributors">Contributors</string>
+    <string name="repo_star">Star</string>
+    <string name="repo_un_star">Unstar</string>
 </resources>
