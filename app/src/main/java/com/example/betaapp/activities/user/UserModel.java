@@ -139,11 +139,6 @@ public class UserModel implements
     }
 
     private void getReposFromLocalStorage() {
-        long userId = DAOUsers.getUserIdByName(userName);
-        ArrayList<DBORepo> repos = new ArrayList<>();
-        if (userId != -1) {
-            repos.addAll(DAORepos.getAllRepos(userId));
-        }
-        onUserLoadingFinishListener.onUserLoadingCompleted(user, repos);
+        onUserLoadingFinishListener.onUserLoadingCompleted(user, DAORepos.getAllRepos(user.getId()));
     }
 }
