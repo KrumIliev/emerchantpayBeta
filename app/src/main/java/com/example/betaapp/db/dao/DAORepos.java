@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.betaapp.BaseApplication;
+import com.example.betaapp.utils.BaseApplication;
 import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.tables.TableRepos;
 

@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.example.betaapp.BaseApplication;
-import com.example.betaapp.db.models.DBORepo;
-
-import java.util.ArrayList;
+import com.example.betaapp.utils.BaseApplication;
 
 public class ReceiverRepos extends ReceiverBase {
 

@@ -5,27 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.betaapp.R;
-import com.example.betaapp.activities.BaseActivity;
+import com.example.betaapp.activities.MenuActivity;
 import com.example.betaapp.activities.user.utils.OnRepoClickListener;
 import com.example.betaapp.activities.user.utils.RepoListAdapter;
-import com.example.betaapp.api.GitHubService;
-import com.example.betaapp.api.receivers.ReceiverUser;
 import com.example.betaapp.databinding.ActivityUserBinding;
 import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.db.models.DBOUser;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 
-public class UserActivity extends BaseActivity implements UserInterfaces.View, OnRepoClickListener {
+public class UserActivity extends MenuActivity implements UserInterfaces.View, OnRepoClickListener {
 
     // -------------------------------------------------------------------------------
     // Fields
@@ -61,8 +56,6 @@ public class UserActivity extends BaseActivity implements UserInterfaces.View, O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setMenuRes(R.menu.main_user);
 
         viewBinding = ActivityUserBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
@@ -106,6 +99,11 @@ public class UserActivity extends BaseActivity implements UserInterfaces.View, O
     // -------------------------------------------------------------------------------
     // Override
     // -------------------------------------------------------------------------------
+
+    @Override
+    protected int setMenu() {
+        return TextUtils.isEmpty(userName) ? MENU_MAIN : MENU_USER;
+    }
 
     @Override
     public void showLoading() {

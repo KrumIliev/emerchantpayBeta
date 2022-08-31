@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.example.betaapp.BaseApplication;
-import com.example.betaapp.db.dao.DAOUsers;
-import com.example.betaapp.db.models.DBOUser;
+import com.example.betaapp.utils.BaseApplication;
 
 public class ReceiverUser extends ReceiverBase {
 

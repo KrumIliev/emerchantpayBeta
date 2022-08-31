@@ -7,7 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.betaapp.BaseApplication;
+import com.example.betaapp.utils.BaseApplication;
 import com.example.betaapp.api.actions.GetOAuthToken;
 import com.example.betaapp.api.actions.GetReposList;
 import com.example.betaapp.api.actions.GetUser;

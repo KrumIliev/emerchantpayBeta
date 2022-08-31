@@ -6,11 +6,9 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.betaapp.BaseApplication;
+import com.example.betaapp.utils.BaseApplication;
 import com.example.betaapp.db.models.DBOUser;
 import com.example.betaapp.db.tables.TableUsers;
-
-import java.util.Arrays;
 
 public class DAOUsers extends DAOBase {
 

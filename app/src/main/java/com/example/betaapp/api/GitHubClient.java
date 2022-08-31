@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
-import com.example.betaapp.BaseApplication;
+import com.example.betaapp.utils.BaseApplication;
 import com.example.betaapp.api.actions.GitHubRequest;
 
 public class GitHubClient extends HurlStack {
