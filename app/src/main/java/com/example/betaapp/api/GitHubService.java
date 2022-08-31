@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.betaapp.api.actions.StarRepo;
+import com.example.betaapp.db.models.DBORepo;
 import com.example.betaapp.utils.BaseApplication;
 import com.example.betaapp.api.actions.GetOAuthToken;
 import com.example.betaapp.api.actions.GetReposList;
@@ -25,6 +27,7 @@ public class GitHubService extends IntentService {
     private static final String ACTION_GET_TOKEN = ACTION_BASE + "ACTION_GET_TOKEN";
     private static final String ACTION_GET_USER = ACTION_BASE + "ACTION_GET_USER";
     private static final String ACTION_GET_REPOS = ACTION_BASE + "ACTION_GET_REPOS";
+    private static final String ACTION_STAR_REPO = ACTION_BASE + "ACTION_STAR_REPO";
 
     // -------------------------------------------------------------------------------
     // Instance creations
@@ -97,6 +100,20 @@ public class GitHubService extends IntentService {
     }
 
     /**
+     * Sends PUT or DELETE request to GitHub API to update repository star status
+     *
+     * @param repo repository to star
+     * @param star true to star / false to unstar
+     */
+    public static void starRepo(DBORepo repo, boolean star) {
+        Intent intent = new Intent(BaseApplication.getContext(), GitHubService.class);
+        intent.setAction(ACTION_STAR_REPO);
+        intent.putExtra(StarRepo.EXTRA_REPO, repo);
+        intent.putExtra(StarRepo.EXTRA_STAR, star);
+        BaseApplication.getContext().startService(intent);
+    }
+
+    /**
      * Cancel all pending requests
      */
     public static void stopService() {
@@ -125,6 +142,10 @@ public class GitHubService extends IntentService {
 
             case ACTION_GET_REPOS:
                 GitHubClient.getInstance().send(new GetReposList(intent));
+                break;
+
+            case ACTION_STAR_REPO:
+                GitHubClient.getInstance().send(new StarRepo(intent));
                 break;
 
             case ACTION_STOP:
